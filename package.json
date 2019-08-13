@@ -1,0 +1,36 @@
+{
+  "name": "minecraft-switcher",
+  "version": "1.0.0",
+  "description": "Janky web UI to switch a Minecraft server between worlds",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/strugee/minecraft-switcher.git"
+  },
+  "keywords": [
+    "minecraft",
+    "webui",
+    "webadmin"
+  ],
+  "author": "AJ Jordan <alex@strugee.net>",
+  "license": "AGPL-3.0+",
+  "bugs": {
+    "url": "https://github.com/strugee/minecraft-switcher/issues"
+  },
+  "homepage": "https://github.com/strugee/minecraft-switcher#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "compression": "^1.7.4",
+    "express": "^4.17.1",
+    "express-session": "^1.16.2",
+    "pug": "^2.0.4",
+    "webauthn": "0.1.2"
+  },
+  "devDependencies": {
+    "browserify": "^16.5.0",
+    "esmify": "^2.1.1"
+  }
+}
