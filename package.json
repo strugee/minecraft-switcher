@@ -22,12 +22,14 @@
   },
   "homepage": "https://github.com/strugee/minecraft-switcher#readme",
   "dependencies": {
+    "@webauthn/client": "^0.1.2",
+    "@webauthn/server": "^0.1.1",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
     "express": "^4.17.1",
     "express-session": "^1.16.2",
     "pug": "^2.0.4",
-    "webauthn": "0.1.2"
+    "write-file-atomic": "^3.0.0"
   },
   "devDependencies": {
     "browserify": "^16.5.0",

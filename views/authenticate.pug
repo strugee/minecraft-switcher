@@ -6,3 +6,7 @@ block head
 
 block body
 	h1 You need to authenticate
+	if needInitialRegister
+		button#initialRegister Register initial security key
+	else
+		button#login Authenticate
