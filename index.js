@@ -31,7 +31,8 @@ var http = require('http'),
     bodyParser = require('body-parser'),
     webauthn = require('@webauthn/server'),
     keys = require('./lib/keys'),
-    onboarding = require('./lib/onboarding');
+    onboarding = require('./lib/onboarding'),
+    servermanager = require('./lib/servermanager');
 
 // XXX replace this shit with something way better
 var config = require('./config');
@@ -89,7 +90,7 @@ app.post('/webauthn/register', function(req, res, next) {
 });
 
 app.post('/webauthn/login/challenge', function(req, res, next) {
-    // TODO `key` isn't included by the client
+    // TODO the client doesn't indicate which key
     var assertionChallenge = webauthn.generateLoginChallenge(keys.list);
 
     req.session.challenge = assertionChallenge.challenge;
@@ -132,7 +133,9 @@ app.get('/', function(req, res, next) {
     if (!req.session.authorized) {
 	res.render('authenticate', {needInitialRegister: keys.list.length === 0});
     } else {
-	res.render('admin');
+	res.render('admin', {
+	    worlds: servermanager.worlds
+	});
     }
 });
 
@@ -170,7 +173,6 @@ app.get('/onboarding', async function(req, res, next) {
 });
 
 app.get('/onboarding/approve/:tokenId', function(req, res, next) {
-    debugger;
     if (!req.session.authorized) return res.status(401).end();
 
     onboarding.approve(req.params.tokenId);

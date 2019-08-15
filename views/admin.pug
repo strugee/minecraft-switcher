@@ -8,3 +8,8 @@ block body
 	button#newKey Register additional key on this device
 	a#newRemoteKey(href='/onboarding') Register additional key on another device
 	button#logout Logout
+
+	p
+		each world in worlds
+			input(type='radio', id=world, name='worldselect', value=world)
+			label(for=world)= world
