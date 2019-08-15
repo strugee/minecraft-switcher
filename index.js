@@ -22,6 +22,8 @@ License along with minecraft-switcher. If not, see
 
 'use strict';
 
+require('make-promises-safe');
+
 var http = require('http'),
     express = require('express'),
     compression = require('compression'),
