@@ -1,0 +1,6 @@
+a {
+	-moz-appearance: button;
+	-webkit-appearance: button;
+	-ms-appearance: button;
+	appearance: button;
+}

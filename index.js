@@ -28,7 +28,8 @@ var http = require('http'),
     session = require('express-session'),
     bodyParser = require('body-parser'),
     webauthn = require('@webauthn/server'),
-    keys = require('./lib/keys');
+    keys = require('./lib/keys'),
+    onboarding = require('./lib/onboarding');
 
 // XXX replace this shit with something way better
 var config = require('./config');
@@ -71,12 +72,18 @@ app.post('/webauthn/register/challenge', function(req, res, next) {
 });
 
 app.post('/webauthn/register', function(req, res, next) {
-    var regReq = webauthn.parseRegisterRequest(req.body);
-    keys.add(regReq.key, function(err) {
-	if (err) return next(err);
-	req.session.authorized = true;
-	res.end();
-    });
+    if (keys.list.length === 0
+	|| req.session.authorized
+	|| onboarding.tokens.has(req.session.token.token)) {
+	var regReq = webauthn.parseRegisterRequest(req.body);
+	keys.add(regReq.key, function(err) {
+	    if (err) return next(err);
+	    req.session.authorized = true;
+	    res.end();
+	});
+    } else {
+	res.status(401).end();
+    }
 });
 
 app.post('/webauthn/login/challenge', function(req, res, next) {
@@ -94,8 +101,7 @@ app.post('/webauthn/login', function(req, res, next) {
     var authorizedKey = null;
     for (var i of keys.list) {
 	// O(n) but it's a very small n so who cares
-	debugger;
-	if (loginReq.keyId == i.credID) {
+	if (loginReq.keyId === i.credID) {
 	    authorizedKey = i;
 	    break;
 	}
@@ -115,12 +121,58 @@ app.post('/webauthn/login', function(req, res, next) {
     }
 });
 
+app.post('/webauthn/logout', function(req, res, next) {
+    req.session.authorized = false;
+    res.end();
+});
+
 app.get('/', function(req, res, next) {
     if (!req.session.authorized) {
 	res.render('authenticate', {needInitialRegister: keys.list.length === 0});
     } else {
 	res.render('admin');
     }
+});
+
+app.get('/onboarding', async function(req, res, next) {
+    if (req.session.authorized) {
+	res.render('onboard', {
+	    untrustedTokens: onboarding.untrustedTokens,
+	    tokens: onboarding.tokens
+	});
+    } else {
+	// Check if the token in the session is stale
+	if (req.session.token
+	    && !(onboarding.untrustedTokens.has(req.session.token.token)
+		|| onboarding.tokens.has(req.session.token.token))) {
+	    delete req.session.token;
+	}
+
+	// XXX try removing this `try`
+	try {
+	    if (!req.session.token) {
+		var token = await onboarding.create();
+		req.session.token = token;
+	    } else {
+		var token = req.session.token;
+	    }
+
+	    res.render('onboard-wait', {
+		approved: onboarding.tokens.has(req.session.token.token),
+		token
+	    });
+	} catch (e) {
+	    next(e);
+	}
+    }
+});
+
+app.get('/onboarding/approve/:tokenId', function(req, res, next) {
+    debugger;
+    if (!req.session.authorized) return res.status(401).end();
+
+    onboarding.approve(req.params.tokenId);
+    res.redirect('/onboarding');
 });
 
 http.createServer(app).listen(1337, function() {

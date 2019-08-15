@@ -8,7 +8,7 @@ var webauthn = {
 // XXX bare './config' didn't work, seems like a Browserify bug
 var config = require('./config.json');
 
-async function register() {
+async function register(finalTarget) {
     var challenge = await fetch('/webauthn/register/challenge', {
 	method: 'POST',
 	headers: {
@@ -29,7 +29,11 @@ async function register() {
 
     // TODO error handling
 
-    location.reload();
+    if (!finalTarget) {
+	location.reload();
+    } else {
+	location.replace(finalTarget);
+    }
 }
 
 async function login() {
@@ -56,10 +60,24 @@ async function login() {
     location.reload();
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-    var initialRegister = document.getElementById('initialRegister');
-    if (initialRegister) initialRegister.addEventListener('click', register);
+async function logout() {
+    await fetch('/webauthn/logout', {
+	method: 'POST'
+    });
 
-    var loginButton = document.getElementById('login');
-    if (loginButton) loginButton.addEventListener('click', login);
+    location.reload();
+}
+
+
+function maybeAddListener(id, fn) {
+    var el = document.getElementById(id);
+    if (el) el.addEventListener('click', fn);
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    maybeAddListener('initialRegister', register);
+    maybeAddListener('login', login);
+    maybeAddListener('newKey', register);
+    maybeAddListener('newKeyRemote', register.bind(null, '/'));
+    maybeAddListener('logout', logout);
 }, false);

@@ -1,7 +1,10 @@
 extends ./layout
 
 block head
-      title Admin page
+	title Admin page
 
 block body
-      h1 Authentication successful
+	h1 Authentication successful
+	button#newKey Register additional key on this device
+	a#newRemoteKey(href='/onboarding') Register additional key on another device
+	button#logout Logout

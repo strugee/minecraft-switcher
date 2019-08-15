@@ -1,0 +1,14 @@
+extends ./layout
+
+block head
+	title Onboard new device
+
+block body
+	h1 Select the registration to approve
+	//- Array#from is used to work around Pug's `each` not working on iterables
+	each token in Array.from(tokens.values())
+		p.approvedToken= token
+	each token in Array.from(untrustedTokens)
+		// XXX I really do feel like this should be a POST, but it requires <form> and a form parser which is annoying (body-parser doesn't have one)
+		p
+			a.unapprovedToken(href='/onboarding/approve/' + token[0])= token[1]

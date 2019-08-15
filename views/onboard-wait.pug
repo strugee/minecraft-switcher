@@ -1,0 +1,10 @@
+extends ./layout
+
+block head
+	title Register your key
+
+block body
+	h1 Registering key...
+	p= token.words
+	if approved
+		button#newKeyRemote Register additional key on this device

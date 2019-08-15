@@ -2,7 +2,6 @@ extends ./layout
 
 block head
 	title Authenticate
-	script(src='/static/bundle.js')
 
 block body
 	h1 You need to authenticate
@@ -10,3 +9,4 @@ block body
 		button#initialRegister Register initial security key
 	else
 		button#login Authenticate
+		a#registerAdditionalRequest(href='/onboarding') Register new security key
