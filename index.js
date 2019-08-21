@@ -53,6 +53,11 @@ app.use(bodyParser.json())
 
 app.use('/static', express.static('./static'));
 
+function requireAuth(req, res, next) {
+    if (!req.session.authorized) return res.status(401).end();
+    next();
+}
+
 app.post('/webauthn/register/challenge', function(req, res, next) {
     var id = req.body.id;
     var name = req.body.name;
@@ -172,11 +177,19 @@ app.get('/onboarding', async function(req, res, next) {
     }
 });
 
-app.get('/onboarding/approve/:tokenId', function(req, res, next) {
-    if (!req.session.authorized) return res.status(401).end();
-
+app.get('/onboarding/approve/:tokenId', requireAuth, function(req, res, next) {
     onboarding.approve(req.params.tokenId);
     res.redirect('/onboarding');
+});
+
+app.post('/control/switch', requireAuth, function(req, res, next) {
+    if (!req.body.target) return res.status(400).send('Request did not include target world');
+
+    var switchJob = servermanager.switchWorld(req.body.target);
+
+    if (!switchJob) return res.status(409).send('World switch already in progress; please wait');
+
+    res.status(202).end();
 });
 
 http.createServer(app).listen(1337, function() {
