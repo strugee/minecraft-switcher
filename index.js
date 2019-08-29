@@ -27,7 +27,7 @@ require('make-promises-safe');
 var http = require('http'),
     express = require('express'),
     compression = require('compression'),
-    session = require('express-session'),
+    session = require('cookie-session'),
     bodyParser = require('body-parser'),
     webauthn = require('@webauthn/server'),
     keys = require('./lib/keys'),
@@ -40,12 +40,15 @@ var config = require('./config');
 var app = express();
 
 app.set('view engine', 'pug');
+app.set('env', config.dev ? 'development' : 'production');
 
 app.use(compression());
 
-// TODO actually tune the options here
 app.use(session({
-    secret: config.secret
+    secret: config.secret,
+    httpOnly: true,
+    secure: !config.dev,
+    sameSite: 'lax'
 }));
 
 app.use(bodyParser.urlencoded({extended: true}));
