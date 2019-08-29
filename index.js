@@ -25,6 +25,7 @@ License along with minecraft-switcher. If not, see
 require('make-promises-safe');
 
 var http = require('http'),
+    assert = require('assert'),
     express = require('express'),
     compression = require('compression'),
     session = require('cookie-session'),
@@ -36,6 +37,7 @@ var http = require('http'),
 
 // XXX replace this shit with something way better
 var config = require('./config');
+assert.notEqual(config.secret, 'change me', 'The application secret has not been changed in the config');
 
 var app = express();
 

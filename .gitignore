@@ -89,3 +89,4 @@ typings/
 
 # Local project stuff
 static/bundle.js
+config.json
