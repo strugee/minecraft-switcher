@@ -31,6 +31,7 @@ var http = require('http'),
     session = require('cookie-session'),
     bodyParser = require('body-parser'),
     webauthn = require('@webauthn/server'),
+    bunyan = require('bunyan'),
     keys = require('./lib/keys'),
     onboarding = require('./lib/onboarding'),
     servermanager = require('./lib/servermanager');
@@ -38,6 +39,8 @@ var http = require('http'),
 // XXX replace this shit with something way better
 var config = require('./config');
 assert.notEqual(config.secret, 'change me', 'The application secret has not been changed in the config');
+
+var log = bunyan.createLogger({name: 'minecraft-switcher'});
 
 var app = express();
 
@@ -198,5 +201,5 @@ app.post('/control/switch', requireAuth, function(req, res, next) {
 });
 
 http.createServer(app).listen(1337, function() {
-    console.log('listening');
+    log.info('Server listening');
 });
