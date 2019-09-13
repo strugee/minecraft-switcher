@@ -25,7 +25,7 @@ Documentation=https://github.com/strugee/minecraft-switcher/blob/master/README.m
 
 [Service]
 Type=simple
-ExecStart=/usr/local/bin/minecraft-switcher
+ExecStart=/usr/bin/minecraft-switcher
 Environment=NODE_ENV=production
 
 # Security restrictions
