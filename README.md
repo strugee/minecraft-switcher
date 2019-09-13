@@ -29,6 +29,7 @@ minecraft-switcher assumes that you are using Spigot and that you've installed t
 For example, these commands would do the trick:
 
 ```sh
+systemctl stop spigot
 mkdir -p
 mkdir -p /opt/spigot/world_repository/original_world /var/lib/local/minecraft-switcher
 mv /opt/spigot/world{,_nether,_the_end} /opt/spigot/server.properties /opt/spigot/world_repository/original_world/
