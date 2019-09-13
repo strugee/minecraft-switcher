@@ -32,6 +32,7 @@ var http = require('http'),
     bodyParser = require('body-parser'),
     webauthn = require('@webauthn/server'),
     bunyan = require('bunyan'),
+    uuid = require('uuid'),
     keys = require('./lib/keys'),
     onboarding = require('./lib/onboarding'),
     servermanager = require('./lib/servermanager');
@@ -40,7 +41,14 @@ var http = require('http'),
 var config = require('./config');
 assert.notEqual(config.secret, 'change me', 'The application secret has not been changed in the config');
 
-var log = bunyan.createLogger({name: 'minecraft-switcher'});
+var log = bunyan.createLogger({
+    name: 'minecraft-switcher',
+    serializers: {
+        req: bunyan.stdSerializers.req,
+        res: bunyan.stdSerializers.res,
+        err: bunyan.stdSerializers.err
+    }
+});
 
 var app = express();
 
@@ -60,6 +68,12 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json())
 
 app.use('/static', express.static('./static'));
+
+app.use(function(req, res, next) {
+    req.log = log.child({req_id: uuid()});
+    req.log.info({req: req});
+    next();
+});
 
 function requireAuth(req, res, next) {
     if (!req.session.authorized) return res.status(401).end();
