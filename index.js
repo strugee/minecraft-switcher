@@ -32,7 +32,7 @@ var http = require('http'),
     bodyParser = require('body-parser'),
     webauthn = require('@webauthn/server'),
     bunyan = require('bunyan'),
-    uuid = require('uuid'),
+    bunyanMiddleware = require('bunyan-middleware'),
     keys = require('./lib/keys'),
     onboarding = require('./lib/onboarding'),
     servermanager = require('./lib/servermanager'),
@@ -66,11 +66,9 @@ app.use(bodyParser.json())
 
 app.use('/static', express.static('./static'));
 
-app.use(function(req, res, next) {
-    req.log = log.child({req_id: uuid()});
-    req.log.info({req: req});
-    next();
-});
+app.use(bunyanMiddleware({
+    logger: log
+}));
 
 function requireAuth(req, res, next) {
     if (!req.session.authorized) return res.status(401).end();
