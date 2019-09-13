@@ -33,6 +33,7 @@ systemctl stop spigot
 mkdir -p
 mkdir -p /opt/spigot/world_repository/original_world /var/lib/local/minecraft-switcher
 mv /opt/spigot/world{,_nether,_the_end} /opt/spigot/server.properties /opt/spigot/world_repository/original_world/
+ln -s /opt/spigot/world_repository/original_world/* /opt/spigot/
 ```
 
 minecraft-switcher also assumes it can create, modify and delete files in `/opt/spigot` and `/opt/spigot/world_repository`. It is your responsibility to arrange for this.
