@@ -35,11 +35,8 @@ var http = require('http'),
     uuid = require('uuid'),
     keys = require('./lib/keys'),
     onboarding = require('./lib/onboarding'),
-    servermanager = require('./lib/servermanager');
-
-// XXX replace this shit with something way better
-var config = require('./config');
-assert.notEqual(config.secret, 'change me', 'The application secret has not been changed in the config');
+    servermanager = require('./lib/servermanager'),
+    config = require('./lib/config');
 
 var log = bunyan.createLogger({
     name: 'minecraft-switcher',
@@ -214,6 +211,6 @@ app.post('/control/switch', requireAuth, function(req, res, next) {
     res.status(202).end();
 });
 
-http.createServer(app).listen(1337, function() {
+http.createServer(app).listen(config.port, function() {
     log.info('Server listening');
 });
