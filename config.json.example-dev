@@ -1,5 +1,5 @@
 {
     "secret": "doypUvDecneicfejMoyxHaHewefWed",
-    "keysFile": "./config.json",
+    "keysFile": "./keys.json",
     "dev": true
 }
