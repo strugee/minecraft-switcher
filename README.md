@@ -31,7 +31,7 @@ For example, these commands would do the trick:
 ```sh
 mkdir -p
 mkdir -p /opt/spigot/world_repository/original_world /var/lib/local/minecraft-switcher
-mv /opt/spigot/world{,_nether,_the_end} /opt/spigot/world_repository/original_world/
+mv /opt/spigot/world{,_nether,_the_end} /opt/spigot/server.properties /opt/spigot/world_repository/original_world/
 ```
 
 minecraft-switcher also assumes it can create, modify and delete files in `/opt/spigot` and `/opt/spigot/world_repository`. It is your responsibility to arrange for this.
