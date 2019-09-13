@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 /*
 
 Copyright 2019 AJ Jordan <alex@strugee.net>.

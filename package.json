@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Janky web UI to switch a Minecraft server between worlds",
   "main": "index.js",
+  "bin": {
+    "minecraft-switcher": "./index.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "browserify -p esmify client.js > static/bundle.js"
