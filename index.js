@@ -28,6 +28,7 @@ require('make-promises-safe');
 
 var http = require('http'),
     assert = require('assert'),
+    path = require('path'),
     express = require('express'),
     compression = require('compression'),
     session = require('cookie-session'),
@@ -52,6 +53,7 @@ var log = bunyan.createLogger({
 var app = express();
 
 app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'views'));
 app.set('env', config.dev ? 'development' : 'production');
 
 app.use(compression());
