@@ -1,0 +1,52 @@
+#
+# minecraft-switcher.service - systemd service file
+#
+# Copyright 2019 AJ Jordan <alex@strugee.net>.
+#
+# This file is part of minecraft-switcher.
+#
+# minecraft-switcher is free software: you can redistribute it and/or
+# modify it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# minecraft-switcher is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License along with minecraft-switcher. If not, see
+# <https://www.gnu.org/licenses/>.
+
+[Unit]
+Description=
+Documentation=https://github.com/strugee/minecraft-switcher/blob/master/README.md
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/minecraft-switcher
+Environment=NODE_ENV=production
+
+# Security restrictions
+# We can't do a whitelist-based {Inaccessible,ReadOnly,ReadWrite}Paths setup because it muddles execute perms
+# Instead, we blacklist what we almost for sure don't need. This is obviously much worse, but what're you gonna do?
+InaccessiblePaths=/bin
+InaccessiblePaths=/boot
+ReadOnlyPaths=/dev
+InaccessiblePaths=/mnt
+ReadOnlyPaths=/proc
+InaccessiblePaths=/sbin
+InaccessiblePaths=/sys
+NoNewPrivileges=true
+ProtectSystem=full
+ProtectHome=true
+ProtectControlGroups=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+PrivateDevices=true
+RestrictRealtime=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
