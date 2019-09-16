@@ -68,7 +68,7 @@ app.use(session({
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json())
 
-app.use('/static', express.static('./static'));
+app.use('/static', express.static(path.join(__dirname, 'static')));
 
 app.use(bunyanMiddleware({
     logger: log
