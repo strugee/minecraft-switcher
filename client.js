@@ -75,9 +75,9 @@ function maybeAddListener(id, fn) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    maybeAddListener('initialRegister', register);
+    maybeAddListener('initialRegister', register.bind(null, null));
     maybeAddListener('login', login);
-    maybeAddListener('newKey', register);
+    maybeAddListener('newKey', register.bind(null, null));
     maybeAddListener('newKeyRemote', register.bind(null, '/'));
     maybeAddListener('logout', logout);
 }, false);
