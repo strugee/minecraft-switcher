@@ -5,6 +5,15 @@ var webauthn = {
     solveLoginChallenge
 };
 
+function wrapPromiseFn(fn) {
+    return function wrappedPromiseFunction() {
+        var p = fn.apply(null, arguments);
+        p.catch(function(err) {
+            alert('Encountered an error: ' + err.message + '\nPlease refresh.');
+        });
+    };
+}
+
 async function register(finalTarget) {
     var challenge = await fetch('/webauthn/register/challenge', {
 	method: 'POST',
@@ -23,8 +32,6 @@ async function register(finalTarget) {
 	},
 	body: JSON.stringify(creds)
     });
-
-    // TODO error handling
 
     if (!finalTarget) {
 	location.reload();
@@ -52,8 +59,6 @@ async function login() {
 	body: JSON.stringify(creds)
     });
 
-    // TODO error handling
-
     location.reload();
 }
 
@@ -72,9 +77,9 @@ function maybeAddListener(id, fn) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    maybeAddListener('initialRegister', register.bind(null, null));
-    maybeAddListener('login', login);
-    maybeAddListener('newKey', register.bind(null, null));
-    maybeAddListener('newKeyRemote', register.bind(null, '/'));
-    maybeAddListener('logout', logout);
+    maybeAddListener('initialRegister', wrapPromiseFn(register).bind(null, null));
+    maybeAddListener('login', wrapPromiseFn(login));
+    maybeAddListener('newKey', wrapPromiseFn(register).bind(null, null));
+    maybeAddListener('newKeyRemote', wrapPromiseFn(register).bind(null, '/'));
+    maybeAddListener('logout', wrapPromiseFn(logout));
 }, false);
