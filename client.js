@@ -5,9 +5,6 @@ var webauthn = {
     solveLoginChallenge
 };
 
-// XXX bare './config' didn't work, seems like a Browserify bug
-var config = require('./config.json');
-
 async function register(finalTarget) {
     var challenge = await fetch('/webauthn/register/challenge', {
 	method: 'POST',
