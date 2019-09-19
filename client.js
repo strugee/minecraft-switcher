@@ -9,7 +9,7 @@ function wrapPromiseFn(fn) {
     return function wrappedPromiseFunction() {
         var p = fn.apply(null, arguments);
         p.catch(function(err) {
-            alert('Encountered an error: ' + err.message + '\nPlease refresh.');
+            alert('Encountered an error: ' + err.message + '\nPlease refresh. If the error persists, contact the system administrator.');
         });
     };
 }
