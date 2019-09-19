@@ -36,6 +36,7 @@ var http = require('http'),
     webauthn = require('@webauthn/server'),
     bunyan = require('bunyan'),
     bunyanMiddleware = require('bunyan-middleware'),
+    Sentry = require('@sentry/node'),
     keys = require('./lib/keys'),
     onboarding = require('./lib/onboarding'),
     servermanager = require('./lib/servermanager'),
@@ -51,6 +52,9 @@ var log = bunyan.createLogger({
 });
 
 var app = express();
+
+Sentry.init({dsn: config.sentryDsn });
+app.use(Sentry.Handlers.requestHandler());
 
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
@@ -212,6 +216,8 @@ app.post('/control/switch', requireAuth, function(req, res, next) {
 
     res.status(202).end();
 });
+
+app.use(Sentry.Handlers.errorHandler());
 
 http.createServer(app).listen(config.port, function() {
     log.info('Server listening');
