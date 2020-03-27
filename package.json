@@ -40,6 +40,8 @@
     "esmify": "^2.1.1",
     "express": "^4.17.1",
     "make-promises-safe": "^5.0.0",
+    "minecraft-server-properties": "0.0.0",
+    "minecraft-server.properties-prop-db": "^1.0.0",
     "pug": "^2.0.4",
     "smart-spawn": "^2.0.1",
     "uuid": "^3.3.2",
