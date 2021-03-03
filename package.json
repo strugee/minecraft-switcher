@@ -42,7 +42,7 @@
     "make-promises-safe": "^5.1.0",
     "minecraft-server-properties": "0.0.0",
     "minecraft-server.properties-prop-db": "^1.0.0",
-    "pug": "^2.0.4",
+    "pug": "^3.0.1",
     "smart-spawn": "^2.0.1",
     "uuid": "^3.4.0",
     "write-file-atomic": "^3.0.3"
