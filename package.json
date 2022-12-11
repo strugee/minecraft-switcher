@@ -38,7 +38,7 @@
     "compression": "^1.7.4",
     "cookie-session": "^1.4.0",
     "esmify": "^2.1.1",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "make-promises-safe": "^5.1.0",
     "minecraft-server-properties": "0.0.0",
     "minecraft-server.properties-prop-db": "^1.0.0",
